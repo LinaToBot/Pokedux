@@ -1,7 +1,7 @@
 import { Card } from "antd";
 import { useDispatch } from "react-redux";
-import { setFavorite } from "../actions";
 import { StartButton } from "./StartButton";
+import { setFavorite } from "../slicesOrFeatures/dataSlice";
 import "./PokemonList.css";
 
 export const PokemonCard = ({ name, image, types, id, favorite }) => {
