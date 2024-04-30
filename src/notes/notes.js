@@ -59,7 +59,7 @@ root.render(
   </React.StrictMode>
 );
 
-export default App;
+export default Apps;
 
 // En tu archivo Counter.js
 import React from 'react';
