@@ -1,17 +1,19 @@
 import { useEffect } from "react";
 import { Col, Spin } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Searcher } from "./components/Searcher";
 import logo from "./statics/logo.svg";
 import { getPokemon } from "./api";
 import "./App.css";
 import PokemonList from "./components/PokemonList";
 import { getPokemonsWithDetails, setLoading } from "./actions";
-import { get } from "immutable";
+import { get, getIn } from "immutable";
 
 function App() {
-  const pokemons = useSelector((state) => get(state, "pokemons")).toJS();
-  const loading = useSelector((state) => get(state, "loading"));
+  const pokemons = useSelector(
+    (state) => state.getIn(["data", "pokemons"], shallowEqual) // shallowEqual: nos ayuda a no tener re-renders innecesarios
+  ).toJS();
+  const loading = useSelector((state) => state.getIn(["ui", "loading"]));
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,3 +45,6 @@ function App() {
 }
 
 export default App;
+
+// note
+// La comparación a profundidad verifica si los objetos son idénticos en estructura y valor, incluyendo todas las propiedades anidadas. A pesar de que las propiedades nombre y tipo tienen los mismos valores en ambos objetos, la comparación a profundidad devuelve false porque los objetos en sí no son idénticos en estructura. son dos objetos diferentes . shallowEqual es útil cuando solo necesitas comparar las propiedades de nivel superior de objetos, evitando renders innecesarios en componentes de React al utilizar Redux. Si necesitas comparar objetos en su totalidad, incluyendo propiedades anidadas, una comparación a profundidad es necesaria.
